@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextField fx:id="password" layoutX="225.0" layoutY="234.0" />
+      <TextField fx:id="userName" layoutX="225.0" layoutY="162.0" />
+      <Text layoutX="285.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" />
+      <Text layoutX="225.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="username" />
+      <Text layoutX="225.0" layoutY="228.0" strokeType="OUTSIDE" strokeWidth="0.0" text="password" />
+      <Text layoutX="237.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scheduling Application" />
+      <Text layoutX="35.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Locaiton: " />
+      <Text fx:id="locationText" layoutX="95.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="France" />
+   </children>
+</AnchorPane>
