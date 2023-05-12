@@ -31,12 +31,19 @@ public class loginController implements Initializable {
 
     @FXML
     private Text userNameText;
+    @FXML
+    private Text loginText;
+    @FXML
+    private Text appNameText;
 
     @FXML
     private Label currentLocale;
 
     void setLanguage(ResourceBundle bundle){
         userNameText.setText(bundle.getString("userName"));
+        password.setText(bundle.getString("password"));
+        loginText.setText(bundle.getString("loginText"));
+        appNameText.setText(bundle.getString("appName"));
     }
 
     void setCurrentLocale(){
@@ -83,5 +90,6 @@ public class loginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         currentLocale.setText("Location: " + AppConfig.DEFAULT_ZONE_ID);
+        setCurrentLocale();
     }
 }

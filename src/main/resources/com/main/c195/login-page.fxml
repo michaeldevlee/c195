@@ -13,7 +13,7 @@
       <Text fx:id="loginText" layoutX="285.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login" />
       <Text fx:id="userNameText" layoutX="225.0" layoutY="156.0" strokeType="OUTSIDE" strokeWidth="0.0" text="username" />
       <Text fx:id="passwordText" layoutX="225.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="password" />
-      <Text fx:id="schedulingApplicationText" layoutX="237.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scheduling Application" />
+      <Text fx:id="appNameText" layoutX="237.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scheduling Application" />
       <Button fx:id="loginButton" layoutX="252.0" layoutY="256.0" mnemonicParsing="false" onAction="#onLoginClick" text="Login" />
       <Button fx:id="exitButton" layoutX="314.0" layoutY="256.0" mnemonicParsing="false" onAction="#onExitClick" text="Exit" />
       <Text fx:id="newToSystemText" layoutX="252.0" layoutY="339.0" strokeType="OUTSIDE" strokeWidth="0.0" text="New to the system?" wrappingWidth="132.7999511718749" />
