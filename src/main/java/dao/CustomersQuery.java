@@ -1,34 +1,35 @@
 package dao;
 
-import helper.DivisionCheck;
+import helper.validationChecker;
 import helper.JDBC;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import model.Customers;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.HashMap;
 
 
 public abstract class CustomersQuery {
 
-
-    public static int insert(int customer_id, String customer_name, String address, String postal_code, String phone, LocalDate create_date, String created_by, Timestamp last_update, String last_updated_by, int division_id) throws SQLException {
-        if (!DivisionCheck.checkIfDivisionExists(division_id)) {
+    public static int insert(String customer_name, String address, String postal_code, String phone, LocalDate create_date, String created_by, Timestamp last_update, String last_updated_by, int division_id) throws SQLException {
+        if (!validationChecker.checkIfDivisionExists(division_id)) {
             throw new IllegalArgumentException("Division with ID " + division_id + " does not exist");
         }
 
-
-        String sql = "INSERT INTO client_schedule.customers (Customer_ID, Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) " +
-                "VALUES(? , ? , ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO client_schedule.customers (Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID) " +
+                "VALUES(? , ? , ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
-        ps.setInt( 1, customer_id);
-        ps.setString(2, customer_name);
-        ps.setString(3, address);
-        ps.setString(4, postal_code);
-        ps.setString(5, phone);
-        ps.setDate(6, Date.valueOf(create_date));
-        ps.setString(7, created_by);
-        ps.setTimestamp(8, last_update);
-        ps.setString(9, last_updated_by);
-        ps.setInt(10, division_id);
+        ps.setString(1, customer_name);
+        ps.setString(2, address);
+        ps.setString(3, postal_code);
+        ps.setString(4, phone);
+        ps.setDate(5, Date.valueOf(create_date));
+        ps.setString(6, created_by);
+        ps.setTimestamp(7, last_update);
+        ps.setString(8, last_updated_by);
+        ps.setInt(9, division_id);
 
         int rowsAffected = ps.executeUpdate();
 
@@ -37,7 +38,7 @@ public abstract class CustomersQuery {
     }
 
     public static int update(int customer_id, String customer_name, String address, String postal_code, String phone, LocalDate create_date, String created_by, Timestamp last_update, String last_updated_by, int division_id) throws SQLException {
-        if (!DivisionCheck.checkIfDivisionExists(division_id)) {
+        if (!validationChecker.checkIfDivisionExists(division_id)) {
             throw new IllegalArgumentException("Division with ID " + division_id + " does not exist");
         }
 
@@ -76,7 +77,8 @@ public abstract class CustomersQuery {
         return appointmentsRowsAffected + customerRowsAffected;
     }
 
-    public static void select() throws SQLException {
+    public static ObservableList<Customers> select() throws SQLException {
+        ObservableList<Customers> customers = FXCollections.observableArrayList();
         String sql = "SELECT * FROM client_schedule.customers";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
@@ -91,10 +93,25 @@ public abstract class CustomersQuery {
             Timestamp lastUpdate = rs.getTimestamp("Last_Update");
             String lastUpdatedBy = rs.getString("Last_Updated_By");
             int divisionId = rs.getInt("Division_ID");
+
+            Customers customer = new Customers(
+                    customerId,
+                    customerName,
+                    address,
+                    postalCode,
+                    phone,
+                    createDate,
+                    createdBy,
+                    lastUpdate,
+                    lastUpdatedBy,
+                    divisionId
+            );
+            customers.add(customer);
         }
+        return customers;
     }
 
-    public static void select(int customer_id) throws SQLException {
+    public static Customers select(int customer_id) throws SQLException {
         String sql = "SELECT * FROM client_schedule.customers WHERE Customer_ID = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
         ps.setInt(1, customer_id);
@@ -111,17 +128,37 @@ public abstract class CustomersQuery {
             String lastUpdatedBy = rs.getString("Last_Updated_By");
             int divisionId = rs.getInt("Division_ID");
 
-            System.out.println("Customer ID: " + customerId);
-            System.out.println("Customer Name: " + customerName);
-            System.out.println("Address: " + address);
-            System.out.println("Postal Code: " + postalCode);
-            System.out.println("Phone: " + phone);
-            System.out.println("Create Date: " + createDate);
-            System.out.println("Created By: " + createdBy);
-            System.out.println("Last Update: " + lastUpdate);
-            System.out.println("Last Updated By: " + lastUpdatedBy);
-            System.out.println("Division ID: " + divisionId);
+            Customers customer = new Customers(
+                    customerId,
+                    customerName,
+                    address,
+                    postalCode,
+                    phone,
+                    createDate,
+                    createdBy,
+                    lastUpdate,
+                    lastUpdatedBy,
+                    divisionId
+            );
+
+            return customer;
         }
+
+        return null;
+    }
+
+    public static HashMap<Integer, String> getCustomerNames() throws SQLException {
+        String sql = "SELECT Customer_ID, Customer_Name FROM client_schedule.customers";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        HashMap<Integer, String> customerNames = new HashMap<Integer, String>();
+        while (rs.next()) {
+            int customerID = rs.getInt("Customer_ID");
+            String customerName = rs.getString("Customer_Name");
+            customerNames.put(customerID, customerName);
+        }
+        return customerNames;
     }
 
 

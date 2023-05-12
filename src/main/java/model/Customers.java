@@ -20,7 +20,7 @@ public class Customers {
 
     private Timestamp last_update;
 
-    private String last_updated;
+    private String last_updated_by;
 
     private int division_id;
 
@@ -33,7 +33,7 @@ public class Customers {
         this.create_date = create_date;
         this.created_by = created_by;
         this.last_update = last_update;
-        this.last_updated = last_updated;
+        this.last_updated_by = last_updated;
         this.division_id = division_id;
     }
 
@@ -101,12 +101,12 @@ public class Customers {
         this.last_update = last_update;
     }
 
-    public String getLast_updated() {
-        return last_updated;
+    public String getLast_updated_by() {
+        return last_updated_by;
     }
 
-    public void setLast_updated(String last_updated) {
-        this.last_updated = last_updated;
+    public void setLast_updated_by(String last_updated_by) {
+        this.last_updated_by = last_updated_by;
     }
 
     public int getDivision_id() {

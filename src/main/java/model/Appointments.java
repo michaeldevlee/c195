@@ -2,6 +2,7 @@ package model;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Appointments {
     private int appointment_id;
@@ -9,9 +10,9 @@ public class Appointments {
     private String description;
     private String location;
     private String type;
-    private LocalDate start;
-    private LocalDate end;
-    private LocalDate create_date;
+    private LocalDateTime start;
+    private LocalDateTime end;
+    private LocalDateTime create_date;
     private String created_by;
     private Timestamp last_update;
     private String last_updated_by;
@@ -19,7 +20,7 @@ public class Appointments {
     private int user_id;
     private int contact_id;
 
-    public Appointments(int appointment_id, String title, String description, String location, String type, LocalDate start, LocalDate end, LocalDate create_date, String created_by, Timestamp last_update, String last_updated_by, int customer_id, int user_id, int contact_id) {
+    public Appointments(int appointment_id, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, LocalDateTime create_date, String created_by, Timestamp last_update, String last_updated_by, int customer_id, int user_id, int contact_id) {
         this.appointment_id = appointment_id;
         this.title = title;
         this.description = description;
@@ -76,27 +77,27 @@ public class Appointments {
         this.type = type;
     }
 
-    public LocalDate getStart() {
+    public LocalDateTime getStart() {
         return start;
     }
 
-    public void setStart(LocalDate start) {
+    public void setStart(LocalDateTime start) {
         this.start = start;
     }
 
-    public LocalDate getEnd() {
+    public LocalDateTime getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDate end) {
+    public void setEnd(LocalDateTime end) {
         this.end = end;
     }
 
-    public LocalDate getCreate_date() {
+    public LocalDateTime getCreate_date() {
         return create_date;
     }
 
-    public void setCreate_date(LocalDate create_date) {
+    public void setCreate_date(LocalDateTime create_date) {
         this.create_date = create_date;
     }
 

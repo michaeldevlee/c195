@@ -4,6 +4,7 @@ module com.main.c195 {
     requires java.sql;
 
 
+    opens model to javafx.base;
     opens com.main.c195 to javafx.fxml;
     exports com.main.c195;
     exports controller;

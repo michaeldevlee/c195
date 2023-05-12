@@ -1,10 +1,12 @@
 package dao;
 
-import helper.DivisionCheck;
 import helper.JDBC;
+import model.Users;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public abstract class UsersQuery {
@@ -83,6 +85,36 @@ public abstract class UsersQuery {
         }
     }
 
+    public static Users select(int user_id) throws SQLException {
+        String sql = "SELECT * FROM client_schedule.users WHERE User_ID = ?";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ps.setInt(1, user_id);
+        ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+            int userID = rs.getInt("User_ID");
+            String userName = rs.getString("User_Name");
+            String password = rs.getString("Password");
+            LocalDate createDate = rs.getDate("Create_Date").toLocalDate();
+            String createdBy = rs.getString("Created_By");
+            Timestamp lastUpdate = new Timestamp(rs.getDate("Last_Update").getTime());
+            String lastUpdatedBy = rs.getString("Last_Updated_By");
+
+            Users user = new Users(
+                    userID,
+                    userName,
+                    password,
+                    createDate,
+                    createdBy,
+                    lastUpdate,
+                    lastUpdatedBy
+            );
+
+            return  user;
+        }
+
+        return null;
+    }
+
     public static boolean select(String user_name, String password) throws SQLException {
         String sql = "SELECT * FROM client_schedule.users WHERE User_Name = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
@@ -104,6 +136,24 @@ public abstract class UsersQuery {
         System.out.println("cant login");
         return false;
     }
+
+    public static HashMap<Integer, String> getUserNames() throws SQLException {
+        String sql = "SELECT User_ID, User_Name FROM client_schedule.users";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+
+        HashMap<Integer, String> userNames = new HashMap<Integer, String>();
+        while (rs.next()) {
+            int userID = rs.getInt("User_ID");
+            String userName = rs.getString("User_Name");
+            userNames.put(userID, userName);
+        }
+        return userNames;
+    }
+
+
+
+
 
 
 }
