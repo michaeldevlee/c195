@@ -33,10 +33,6 @@ public class createUserController implements Initializable {
     private TextField password;
     @FXML
     private TextField verifyPassword;
-    @FXML
-    private Button createButton;
-    @FXML
-    private Button cancelButton;
 
     List<String> errors = FXCollections.observableArrayList();
 

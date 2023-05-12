@@ -9,21 +9,17 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import model.Appointments;
 import model.Customers;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class viewCustomerController implements Initializable {
@@ -57,14 +53,30 @@ public class viewCustomerController implements Initializable {
         stage.show();
     }
     @FXML
-    void onEditClick(ActionEvent event) throws IOException {
-        customersTableView.getRowFactory();
+    void onEditClick(ActionEvent event) throws IOException, SQLException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/com/main/c195/edit-customer-page.fxml"));
+        loader.load();
+
+        editCustomersController editController = loader.getController();
+        if (customersTableView.getSelectionModel().getSelectedItem() != null){
+            editController.sendCustomer(customersTableView.getSelectionModel().getSelectedItem());
+
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            Parent scene = loader.getRoot();
+            stage.setScene(new Scene(scene));
+            stage.show();
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.WARNING, "No item to modify, please select an appointment");
+            Optional<ButtonType> result = alert.showAndWait();
+        }
     }
 
     @FXML
     void onDeleteClick(ActionEvent event) throws SQLException {
         int customer_id = customersTableView.getSelectionModel().getSelectedItem().getCustomer_id();
-        AppointmentsQuery.delete(customer_id);
+        CustomersQuery.delete(customer_id);
         customers = CustomersQuery.select();
         customersTableView.setItems(customers);
     }

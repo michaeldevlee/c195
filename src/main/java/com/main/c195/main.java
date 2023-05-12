@@ -9,12 +9,17 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.ZoneId;
+
 
 public class main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
+        ZoneId zoneId = ZoneId.systemDefault();
+
+
+
+
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("login-page.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("Hello!");

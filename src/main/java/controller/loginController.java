@@ -2,23 +2,22 @@ package controller;
 
 import com.main.c195.main;
 import dao.UsersQuery;
+import helper.AppConfig;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.scene.control.cell.PropertyValueFactory;
-import model.*;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.util.Optional;
 
+import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class loginController implements Initializable {
@@ -31,6 +30,25 @@ public class loginController implements Initializable {
     private TextField password;
 
     @FXML
+    private Text userNameText;
+
+    @FXML
+    private Label currentLocale;
+
+    void setLanguage(ResourceBundle bundle){
+        userNameText.setText(bundle.getString("userName"));
+    }
+
+    void setCurrentLocale(){
+        ResourceBundle bundle;
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            bundle = ResourceBundle.getBundle("messages_fr");
+            setLanguage(bundle);
+        } else {
+            bundle = ResourceBundle.getBundle("messages");
+        }
+    }
+    @FXML
     void onLoginClick(ActionEvent event) throws IOException, SQLException {
         String userNameInput = userName.getText();
         String userPassInput = password.getText();
@@ -40,7 +58,11 @@ public class loginController implements Initializable {
             Scene scene = new Scene(fxmlLoader.load());
             stage.setScene(scene);
             stage.show();
-        };
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Username and password are incorrect, please try again");
+            Optional<ButtonType> result = alert.showAndWait();
+        }
     }
 
     @FXML
@@ -60,6 +82,6 @@ public class loginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        currentLocale.setText("Location: " + AppConfig.DEFAULT_ZONE_ID);
     }
 }
