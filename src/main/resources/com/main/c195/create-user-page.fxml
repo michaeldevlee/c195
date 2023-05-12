@@ -10,14 +10,14 @@
    <children>
       <TextField fx:id="password" layoutX="225.0" layoutY="188.0" />
       <TextField fx:id="userName" layoutX="225.0" layoutY="143.0" />
-      <Text layoutX="245.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create new account" />
-      <Text layoutX="225.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="username" />
-      <Text layoutX="225.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="password" />
-      <Text layoutX="237.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scheduling Application" />
-      <Text layoutX="35.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Locaiton: " />
+      <Text fx:id="createNewAccountText" layoutX="245.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create new account" />
+      <Text fx:id="userNameText" layoutX="225.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="username" />
+      <Text fx:id="passwordText" layoutX="225.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="password" />
+      <Text fx:id="appName" layoutX="237.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Scheduling Application" />
+      <Text fx:id="locationText" layoutX="35.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Locaiton: " />
       <Text fx:id="locationText" layoutX="95.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="France" />
       <TextField fx:id="verifyPassword" layoutX="225.0" layoutY="233.0" />
-      <Text layoutX="225.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="verify password" />
+      <Text fx:id="verifyPasswordText" layoutX="225.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="verify password" />
       <Button fx:id="createButton" layoutX="224.0" layoutY="347.0" mnemonicParsing="false" onAction="#onCreateClick" text="Create" />
       <Button fx:id="cancelButton" layoutX="324.0" layoutY="347.0" mnemonicParsing="false" onAction="#onCancelClick" text="Cancel" />
       <FlowPane fx:id="errorPane" layoutX="224.0" layoutY="269.0" prefHeight="58.0" prefWidth="200.0" />

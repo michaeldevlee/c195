@@ -2,6 +2,7 @@ package controller;
 
 import com.main.c195.main;
 import dao.UsersQuery;
+import helper.AppConfig;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -11,6 +12,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Users;
 
@@ -26,13 +29,54 @@ public class createUserController implements Initializable {
 
 
     Stage stage;
-    Parent scene;
+
+
     @FXML
-    private TextField userName;
+    private Text appName;
+
+    @FXML
+    private Button cancelButton;
+
+    @FXML
+    private Button createButton;
+
+    @FXML
+    private Text createNewAccountText;
+
+    @FXML
+    private FlowPane errorPane;
+
+    @FXML
+    private Text locationText;
+
     @FXML
     private TextField password;
+
+    @FXML
+    private Text passwordText;
+
+    @FXML
+    private TextField userName;
+
+    @FXML
+    private Text userNameText;
+
     @FXML
     private TextField verifyPassword;
+
+    @FXML
+    private Text verifyPasswordText;
+
+    void setLanguage(ResourceBundle bundle){
+        appName.setText(bundle.getString("appNameCreateUser"));
+        cancelButton.setText(bundle.getString("cancelButtonCreateUser"));
+        createButton.setText(bundle.getString("createButtonCreateUser"));
+        createNewAccountText.setText(bundle.getString("createNewAccountTextCreateUser"));
+        locationText.setText(bundle.getString("locationTextCreateUser"));
+        passwordText.setText(bundle.getString("passwordTextCreateUser"));
+        userNameText.setText(bundle.getString("userNameTextCreateUser"));
+        verifyPasswordText.setText(bundle.getString("verifyPasswordTextCreateUser"));
+    }
 
     List<String> errors = FXCollections.observableArrayList();
 
@@ -102,7 +146,8 @@ public class createUserController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        ResourceBundle bundle = AppConfig.bundleInit();
+        setLanguage(bundle);
     }
 }
 

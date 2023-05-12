@@ -25,36 +25,50 @@ public class loginController implements Initializable {
     Stage stage;
 
     @FXML
-    private TextField userName;
-    @FXML
-    private TextField password;
+    private Text appNameText;
 
     @FXML
-    private Text userNameText;
-    @FXML
-    private Text loginText;
-    @FXML
-    private Text appNameText;
+    private Button createButton;
 
     @FXML
     private Label currentLocale;
 
+    @FXML
+    private Button exitButton;
+
+    @FXML
+    private Button loginButton;
+
+    @FXML
+    private Text loginText;
+
+    @FXML
+    private Text newToSystemText;
+
+    @FXML
+    private TextField password;
+
+    @FXML
+    private Text passwordText;
+
+    @FXML
+    private TextField userName;
+
+    @FXML
+    private Text userNameText;
+
+
     void setLanguage(ResourceBundle bundle){
         userNameText.setText(bundle.getString("userName"));
-        password.setText(bundle.getString("password"));
+        passwordText.setText(bundle.getString("password"));
         loginText.setText(bundle.getString("loginText"));
         appNameText.setText(bundle.getString("appName"));
+        loginButton.setText(bundle.getString("loginButton"));
+        newToSystemText.setText(bundle.getString("newToSystem"));
+        createButton.setText(bundle.getString("createButton"));
+        exitButton.setText(bundle.getString("exitButton"));
     }
 
-    void setCurrentLocale(){
-        ResourceBundle bundle;
-        if (Locale.getDefault().getLanguage().equals("fr")) {
-            bundle = ResourceBundle.getBundle("messages_fr");
-            setLanguage(bundle);
-        } else {
-            bundle = ResourceBundle.getBundle("messages");
-        }
-    }
     @FXML
     void onLoginClick(ActionEvent event) throws IOException, SQLException {
         String userNameInput = userName.getText();
@@ -90,6 +104,7 @@ public class loginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         currentLocale.setText("Location: " + AppConfig.DEFAULT_ZONE_ID);
-        setCurrentLocale();
+        ResourceBundle bundle = AppConfig.bundleInit();
+        setLanguage(bundle);
     }
 }
