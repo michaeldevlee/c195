@@ -79,6 +79,9 @@ public class viewCustomerController implements Initializable {
         CustomersQuery.delete(customer_id);
         customers = CustomersQuery.select();
         customersTableView.setItems(customers);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Customer has been deleted");
+        Optional<ButtonType> result = alert.showAndWait();
     }
     @FXML
     void onAppointmentListClick(ActionEvent event) throws IOException {

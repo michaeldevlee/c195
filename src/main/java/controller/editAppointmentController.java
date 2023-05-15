@@ -26,8 +26,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -57,7 +58,8 @@ public class editAppointmentController implements Initializable {
     private ComboBox assignUserDropDown;
     @FXML
     private ComboBox contactInfoDropDown;
-
+    @FXML
+    private TextField idField;
 
     public Appointments currentAppointment;
     public editAppointmentController() throws SQLException {
@@ -110,9 +112,9 @@ public class editAppointmentController implements Initializable {
         String typeText = typeField.getText();
         String fromTime = startTimeComboBox.getValue().toString();
         String toTime = endTimeComboBox.getValue().toString();
-        LocalDateTime start = TimeFormatter.getDateAndTime(fromDatePicker.getValue(), fromTime);
-        LocalDateTime end = TimeFormatter.getDateAndTime(toDatePicker.getValue(), toTime);
-        LocalDateTime createDate = LocalDateTime.now();
+        Timestamp start = TimeFormatter.getTimeStamp(fromDatePicker.getValue(), fromTime, ZoneId.systemDefault());
+        Timestamp end = TimeFormatter.getTimeStamp(toDatePicker.getValue(), toTime, ZoneId.systemDefault());
+        Timestamp createDate = Timestamp.valueOf(LocalDateTime.now());
         String createdBy = "script";
         Timestamp last_update = Timestamp.valueOf(LocalDateTime.now());
         String updatedBy = "script";
@@ -128,7 +130,7 @@ public class editAppointmentController implements Initializable {
                 typeText,
                 start,
                 end,
-                createDate.toLocalDate(),
+                createDate,
                 createdBy,
                 last_update,
                 updatedBy,
@@ -159,10 +161,10 @@ public class editAppointmentController implements Initializable {
         descriptionField.setText(appointment.getDescription());
         locationField.setText(appointment.getLocation());
         typeField.setText(appointment.getType());
-        fromDatePicker.setValue(appointment.getStart().toLocalDate());
-        toDatePicker.setValue(appointment.getEnd().toLocalDate());
-        startTimeComboBox.setValue(appointment.getStart().toLocalTime());
-        endTimeComboBox.setValue(appointment.getEnd().toLocalTime());
+        fromDatePicker.setValue(appointment.getStart().toLocalDateTime().toLocalDate());
+        toDatePicker.setValue(appointment.getEnd().toLocalDateTime().toLocalDate());
+        startTimeComboBox.setValue(appointment.getStart().toLocalDateTime().toLocalTime());
+        endTimeComboBox.setValue(appointment.getEnd().toLocalDateTime().toLocalTime());
 
         Customers customer = CustomersQuery.select(appointment.getCustomer_id());
         Users user = UsersQuery.select(appointment.getUser_id());
@@ -174,6 +176,8 @@ public class editAppointmentController implements Initializable {
     }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        idField.setDisable(true);
+        idField.setPromptText("Auto-generated");
         try {
             dropDownInit();
         } catch (SQLException e) {

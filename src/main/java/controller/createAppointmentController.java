@@ -5,28 +5,27 @@ import dao.AppointmentsQuery;
 import dao.ContactsQuery;
 import dao.CustomersQuery;
 import dao.UsersQuery;
+import helper.AppValidCheck;
 import helper.LoadTimes;
 import helper.TimeFormatter;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class createAppointmentController implements Initializable {
@@ -55,6 +54,8 @@ public class createAppointmentController implements Initializable {
     @FXML
     private ComboBox contactInfoDropDown;
 
+    @FXML
+    private TextField idField;
     @FXML
     private Button createButton;
     @FXML
@@ -111,9 +112,9 @@ public class createAppointmentController implements Initializable {
         String typeText = typeField.getText();
         String fromTime = startTimeComboBox.getValue().toString();
         String toTime = endTimeComboBox.getValue().toString();
-        LocalDateTime start = TimeFormatter.getDateAndTime(fromDatePicker.getValue(), fromTime);
-        LocalDateTime end = TimeFormatter.getDateAndTime(toDatePicker.getValue(), toTime);
-        LocalDateTime createDate = LocalDateTime.now();
+        Timestamp start = TimeFormatter.getTimeStamp(fromDatePicker.getValue(), fromTime, ZoneId.systemDefault());
+        Timestamp end = TimeFormatter.getTimeStamp(toDatePicker.getValue(), toTime, ZoneId.systemDefault());
+        Timestamp createDate = Timestamp.valueOf(LocalDateTime.now());
         String createdBy = "script";
         Timestamp last_update = Timestamp.valueOf(LocalDateTime.now());
         String updatedBy = "script";
@@ -121,27 +122,52 @@ public class createAppointmentController implements Initializable {
         int userID = userIDs.get(assignUserDropDown.getValue());
         int contactID = contactIDs.get(contactInfoDropDown.getValue());
 
-        AppointmentsQuery.insert(
-                titleText,
-                descText,
-                locText,
-                typeText,
-                start,
-                end,
-                createDate,
-                createdBy,
-                last_update,
-                updatedBy,
-                customerID,
-                userID,
-                contactID
+        ObservableList<String> listOfErrors = AppValidCheck.businessHoursErrorList(
+                fromTime,
+                fromDatePicker,
+                toTime,
+                toDatePicker
         );
 
-        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("view-appointment-page.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.show();
+        if (AppointmentsQuery.isOverlapping(start, end, customerID)){
+
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Your date and time frame conflict with existing appointments");
+            Optional<ButtonType> result = alert.showAndWait();
+            return;
+        }
+
+
+        if(listOfErrors.isEmpty()){
+            AppointmentsQuery.insert(
+                    titleText,
+                    descText,
+                    locText,
+                    typeText,
+                    start,
+                    end,
+                    createDate,
+                    createdBy,
+                    last_update,
+                    updatedBy,
+                    customerID,
+                    userID,
+                    contactID
+            );
+
+            stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("view-appointment-page.fxml"));
+            Scene scene = new Scene(fxmlLoader.load());
+            stage.setScene(scene);
+            stage.show();
+        }
+        else{
+            String errorMessage = String.join("\n", listOfErrors);
+
+            Alert alert = new Alert(Alert.AlertType.WARNING, errorMessage);
+            Optional<ButtonType> result = alert.showAndWait();
+        }
+
+
 
     }
     @FXML
@@ -155,6 +181,8 @@ public class createAppointmentController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        idField.setDisable(true);
+        idField.setPromptText("Auto-generated");
         try {
             dropDownInit();
         } catch (SQLException e) {

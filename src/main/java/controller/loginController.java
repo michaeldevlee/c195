@@ -81,8 +81,15 @@ public class loginController implements Initializable {
             stage.show();
         }
         else{
-            Alert alert = new Alert(Alert.AlertType.WARNING, "Username and password are incorrect, please try again");
-            Optional<ButtonType> result = alert.showAndWait();
+            if (Locale.getDefault().getLanguage().equals("fr")){
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Le nom d'utilisateur et le mot de passe sont incorrects, veuillez réessayer");
+                Optional<ButtonType> result = alert.showAndWait();
+            }
+            else{
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Username and password are incorrect, please try again");
+                Optional<ButtonType> result = alert.showAndWait();
+            }
+
         }
     }
 

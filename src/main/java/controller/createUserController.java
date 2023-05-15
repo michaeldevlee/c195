@@ -67,6 +67,7 @@ public class createUserController implements Initializable {
     @FXML
     private Text verifyPasswordText;
 
+
     void setLanguage(ResourceBundle bundle){
         appName.setText(bundle.getString("appNameCreateUser"));
         cancelButton.setText(bundle.getString("cancelButtonCreateUser"));

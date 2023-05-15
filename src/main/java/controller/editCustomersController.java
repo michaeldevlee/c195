@@ -1,10 +1,7 @@
 package controller;
 
 import com.main.c195.main;
-import dao.ContactsQuery;
-import dao.CustomersQuery;
-import dao.FirstLevelDivisionQuery;
-import dao.UsersQuery;
+import dao.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,10 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.Appointments;
-import model.Contacts;
 import model.Customers;
-import model.Users;
+import model.FirstLevelDivisions;
 
 import java.io.IOException;
 import java.net.URL;
@@ -45,7 +40,12 @@ public class editCustomersController implements Initializable {
     @FXML
     private ComboBox <String> stateComboBox;
 
+    @FXML
+    private ComboBox<String> countryComboBox;
+    @FXML
+    private TextField idField;
     HashMap<String, Integer> divisions;
+    HashMap<String, Integer> countries;
     public Customers currentCustomer;
 
     String findDivisionName(int division_id){
@@ -58,10 +58,17 @@ public class editCustomersController implements Initializable {
     }
 
     void stateComboBoxInit() throws SQLException {
-        divisions = FirstLevelDivisionQuery.select();
+        divisions = FirstLevelDivisionQuery.selectAndReturnHash();
         ObservableList<String> divisionNames = FXCollections.observableArrayList();
         divisionNames.addAll(divisions.keySet());
         stateComboBox.setItems(divisionNames.sorted());
+    }
+
+    void countryComboBoxInit() throws SQLException{
+        countries = CountryQuery.select();
+        ObservableList<String> countryNames = FXCollections.observableArrayList();
+        countryNames.addAll(countries.keySet());
+        countryComboBox.setItems(countryNames);
     }
 
     @FXML
@@ -100,6 +107,20 @@ public class editCustomersController implements Initializable {
         stage.show();
     }
 
+    @FXML
+    void onCountryComboBoxChange(ActionEvent event) throws SQLException {
+        divisions = FirstLevelDivisionQuery.selectAndReturnHash();
+        ObservableList<FirstLevelDivisions> divisionList = FirstLevelDivisionQuery.selectAll();
+
+        ObservableList<String> divisionNames = FXCollections.observableArrayList();
+        for(FirstLevelDivisions division : divisionList){
+            if (division.getCountry_id() == countries.get(countryComboBox.getValue())){
+                divisionNames.add(division.getDivision());
+            }
+        }
+        stateComboBox.setItems(divisionNames.sorted());
+    }
+
     public void sendCustomer(Customers customer) throws SQLException {
 
         currentCustomer = customer;
@@ -111,10 +132,15 @@ public class editCustomersController implements Initializable {
 
     }
 
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        idField.setDisable(true);
+        idField.setPromptText("Auto-generated");
         try {
             stateComboBoxInit();
+            countryComboBoxInit();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

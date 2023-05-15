@@ -14,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointments;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -37,6 +38,7 @@ public class viewAppointmentController implements Initializable {
     private DatePicker fromWeekPicker;
     @FXML
     private DatePicker toWeekPicker;
+
     @FXML
     private TableView<Appointments> appointmentsTableView;
     @FXML private TableColumn<?, ?> appointmentID;
@@ -72,8 +74,8 @@ public class viewAppointmentController implements Initializable {
         if (weeklyRadioButton.isSelected() && fromWeekPicker.getValue() != null) {
             toWeekPicker.setValue(selectedDate.plusDays(7));
             for (Appointments appointment : appointments) {
-                LocalDateTime startDate = appointment.getStart();
-                LocalDateTime endDate = appointment.getEnd();
+                LocalDateTime startDate = appointment.getStart().toLocalDateTime();
+                LocalDateTime endDate = appointment.getEnd().toLocalDateTime();
                 LocalDateTime selectedStartDate = fromWeekPicker.getValue().atTime(LocalTime.MIDNIGHT);
                 LocalDateTime selectedEndDate = toWeekPicker.getValue().atTime(LocalTime.MIDNIGHT);
 
@@ -84,8 +86,8 @@ public class viewAppointmentController implements Initializable {
         } else if (monthlyRadioButton.isSelected() && fromWeekPicker.getValue() != null) {
             toWeekPicker.setValue(selectedDate.plusDays(30));
             for (Appointments appointment : appointments) {
-                LocalDateTime startDate = appointment.getStart();
-                LocalDateTime endDate = appointment.getEnd();
+                LocalDateTime startDate = appointment.getStart().toLocalDateTime();
+                LocalDateTime endDate = appointment.getEnd().toLocalDateTime();
                 LocalDateTime selectedStartDate = fromWeekPicker.getValue().atTime(LocalTime.MIDNIGHT);
                 LocalDateTime selectedEndDate = toWeekPicker.getValue().atTime(LocalTime.MIDNIGHT);
 
@@ -129,9 +131,13 @@ public class viewAppointmentController implements Initializable {
     @FXML
     void onDeleteClick(ActionEvent event) throws SQLException {
         int appointment_id = appointmentsTableView.getSelectionModel().getSelectedItem().getAppointment_id();
+        String appointment_type = AppointmentsQuery.select(appointment_id).getType();
         AppointmentsQuery.delete(appointment_id);
         appointments = AppointmentsQuery.select();
         appointmentsTableView.setItems(appointments);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION, "Canceled appointment | id: " + appointment_id +" | " + " type: " + appointment_type);
+        Optional<ButtonType> result = alert.showAndWait();
 
     }
     @FXML

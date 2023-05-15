@@ -6,13 +6,11 @@ import javafx.collections.ObservableList;
 import model.Appointments;
 
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 
 public abstract class AppointmentsQuery {
 
-    public static int insert(String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, LocalDateTime create_date, String created_by, Timestamp last_update, String last_updated_by, int customer_ID, int user_id, int contact_ID) throws SQLException {
+    public static int insert(String title, String description, String location, String type, Timestamp start, Timestamp end, Timestamp create_date, String created_by, Timestamp last_update, String last_updated_by, int customer_ID, int user_id, int contact_ID) throws SQLException {
 
         String sql = "INSERT INTO client_schedule.appointments (Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID) " +
                 "VALUES(? , ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -21,9 +19,9 @@ public abstract class AppointmentsQuery {
         ps.setString(2, description);
         ps.setString(3, location);
         ps.setString(4, type);
-        ps.setTimestamp(5, Timestamp.valueOf(start));
-        ps.setTimestamp(6, Timestamp.valueOf(end));
-        ps.setTimestamp(7, Timestamp.valueOf(create_date));
+        ps.setTimestamp(5, start);
+        ps.setTimestamp(6, end);
+        ps.setTimestamp(7, create_date);
         ps.setString(8, created_by);
         ps.setTimestamp(9, last_update);
         ps.setString(10, last_updated_by);
@@ -36,7 +34,7 @@ public abstract class AppointmentsQuery {
         return rowsAffected;
 
     }
-    public static int update(int appointment_id, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, LocalDate create_date, String created_by, Timestamp last_update, String last_updated_by, int customer_id, int user_id, int contact_id) throws SQLException {
+    public static int update(int appointment_id, String title, String description, String location, String type, Timestamp start, Timestamp end, Timestamp create_date, String created_by, Timestamp last_update, String last_updated_by, int customer_id, int user_id, int contact_id) throws SQLException {
 
         String sql = "UPDATE client_schedule.appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Create_Date = ?, Created_By = ?, Last_Update = ?, Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?" ;
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
@@ -44,9 +42,9 @@ public abstract class AppointmentsQuery {
         ps.setString(2, description);
         ps.setString(3, location);
         ps.setString(4, type);
-        ps.setTimestamp(5, Timestamp.valueOf(start));
-        ps.setTimestamp(6, Timestamp.valueOf(end));
-        ps.setDate(7, Date.valueOf(create_date));
+        ps.setTimestamp(5, start);
+        ps.setTimestamp(6, end);
+        ps.setTimestamp(7, create_date);
         ps.setString(8, created_by);
         ps.setTimestamp(9, last_update);
         ps.setString(   10, last_updated_by);
@@ -79,9 +77,9 @@ public abstract class AppointmentsQuery {
             String description = rs.getString("Description");
             String location = rs.getString("Location");
             String type = rs.getString("Type");
-            LocalDateTime start =rs.getTimestamp("Start").toLocalDateTime() ;
-            LocalDateTime end = rs.getTimestamp("End").toLocalDateTime();
-            LocalDateTime createDate = rs.getTimestamp("Create_Date").toLocalDateTime();
+            Timestamp start =rs.getTimestamp("Start") ;
+            Timestamp end = rs.getTimestamp("End");
+            Timestamp createDate = rs.getTimestamp("Create_Date");
             String createdBy = rs.getString("Created_By");
             Timestamp lastUpdate = rs.getTimestamp("Last_Update");
             String lastUpdatedBy = rs.getString("Last_Updated_By");
@@ -96,26 +94,55 @@ public abstract class AppointmentsQuery {
         return appointments;
     }
 
-    public static boolean select(String user_name, String password) throws SQLException {
-        String sql = "SELECT * FROM client_schedule.users WHERE User_Name = ?";
+    public static boolean isOverlapping(Timestamp start, Timestamp end, int customerID) throws SQLException {
+        String sql = "SELECT * FROM client_schedule.appointments " +
+                "WHERE" +
+                "(? >= Start AND ? < End " +
+                "OR ? > Start AND ? <= End " +
+                "OR ? <= Start AND ? >= End) " +
+                " AND Customer_ID = ?";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);
-        ps.setString(1, user_name);
+        ps.setTimestamp(1, start);
+        ps.setTimestamp(2, end);
+        ps.setTimestamp(3, start);
+        ps.setTimestamp(4, end);
+        ps.setTimestamp(5, start);
+        ps.setTimestamp(6, end);
+        ps.setInt(7, customerID);
+
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()){
+            return true;
+        }
+        return false;
+    }
+
+    public static Appointments select(int appointment_id) throws SQLException {
+        String sql = "SELECT * FROM client_schedule.appointments WHERE Appointment_ID = ?";
+        PreparedStatement ps = JDBC.connection.prepareStatement(sql);
+        ps.setInt(1, appointment_id);
         ResultSet rs = ps.executeQuery();
         while(rs.next()){
-            String userPassword = rs.getString("Password");
+            int appointmentID = rs.getInt("Appointment_ID");
+            String title = rs.getString("Title");
+            String description = rs.getString("Description");
+            String location = rs.getString("Location");
+            String type = rs.getString("Type");
+            Timestamp start =rs.getTimestamp("Start") ;
+            Timestamp end = rs.getTimestamp("End");
+            Timestamp createDate = rs.getTimestamp("Create_Date");
+            String createdBy = rs.getString("Created_By");
+            Timestamp lastUpdate = rs.getTimestamp("Last_Update");
+            String lastUpdatedBy = rs.getString("Last_Updated_By");
+            int customerID = rs.getInt("Customer_ID");
+            int userID = rs.getInt("User_ID");
+            int contactID = rs.getInt("Contact_ID");
 
-            if (userPassword.equals(password)){
-                System.out.println("you can log in");
-                return true;
-            }
-            else{
-                System.out.println("Wrong login info");
-                return false;
-            }
+            Appointments appointment = new Appointments(appointmentID, title, description, location, type, start, end, createDate, createdBy, lastUpdate, lastUpdatedBy, customerID, userID, contactID);
+            return appointment;
 
         }
-        System.out.println("cant login");
-        return false;
+        return null;
     }
 
 

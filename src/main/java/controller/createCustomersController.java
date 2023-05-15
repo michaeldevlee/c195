@@ -14,8 +14,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import model.FirstLevelDivisions;
-import org.w3c.dom.events.Event;
 
 import java.io.IOException;
 import java.net.URL;
@@ -40,10 +38,12 @@ public class createCustomersController implements Initializable {
     @FXML
     private ComboBox <String> stateComboBox;
 
+    @FXML
+    private TextField idField;
     HashMap<String, Integer> divisions;
 
     void stateComboBoxInit() throws SQLException {
-        divisions = FirstLevelDivisionQuery.select();
+        divisions = FirstLevelDivisionQuery.selectAndReturnHash();
         ObservableList<String> divisionNames = FXCollections.observableArrayList();
         divisionNames.addAll(divisions.keySet());
 
@@ -79,7 +79,7 @@ public class createCustomersController implements Initializable {
     @FXML
     void onCancelClick(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("create-customer-page.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("view-customer-page.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.show();
@@ -87,6 +87,8 @@ public class createCustomersController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        idField.setDisable(true);
+        idField.setPromptText("Auto-generated");
         try {
             stateComboBoxInit();
         } catch (SQLException e) {

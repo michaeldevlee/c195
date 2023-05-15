@@ -10,9 +10,9 @@ public class Appointments {
     private String description;
     private String location;
     private String type;
-    private LocalDateTime start;
-    private LocalDateTime end;
-    private LocalDateTime create_date;
+    private Timestamp start;
+    private Timestamp end;
+    private Timestamp create_date;
     private String created_by;
     private Timestamp last_update;
     private String last_updated_by;
@@ -20,7 +20,7 @@ public class Appointments {
     private int user_id;
     private int contact_id;
 
-    public Appointments(int appointment_id, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, LocalDateTime create_date, String created_by, Timestamp last_update, String last_updated_by, int customer_id, int user_id, int contact_id) {
+    public Appointments(int appointment_id, String title, String description, String location, String type, Timestamp start, Timestamp end, Timestamp create_date, String created_by, Timestamp last_update, String last_updated_by, int customer_id, int user_id, int contact_id) {
         this.appointment_id = appointment_id;
         this.title = title;
         this.description = description;
@@ -77,27 +77,27 @@ public class Appointments {
         this.type = type;
     }
 
-    public LocalDateTime getStart() {
+    public Timestamp getStart() {
         return start;
     }
 
-    public void setStart(LocalDateTime start) {
+    public void setStart(Timestamp start) {
         this.start = start;
     }
 
-    public LocalDateTime getEnd() {
+    public Timestamp getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDateTime end) {
+    public void setEnd(Timestamp end) {
         this.end = end;
     }
 
-    public LocalDateTime getCreate_date() {
+    public Timestamp getCreate_date() {
         return create_date;
     }
 
-    public void setCreate_date(LocalDateTime create_date) {
+    public void setCreate_date(Timestamp create_date) {
         this.create_date = create_date;
     }
 

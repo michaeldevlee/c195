@@ -8,20 +8,22 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="451.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.createCustomersController">
    <children>
-      <TextField fx:id="customerName" layoutX="61.0" layoutY="97.0" prefHeight="26.0" prefWidth="182.0" />
-      <Text layoutX="61.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
+      <TextField fx:id="customerName" layoutX="59.0" layoutY="160.0" prefHeight="26.0" prefWidth="182.0" />
+      <Text layoutX="59.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
       <Text layoutX="232.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add Customer" />
-      <Text layoutX="35.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Locaiton: " />
-      <Text fx:id="locationText" layoutX="95.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="France" />
-      <TextField fx:id="customerAddress" layoutX="61.0" layoutY="159.0" prefHeight="26.0" prefWidth="182.0" />
-      <Text layoutX="61.0" layoutY="150.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" />
-      <TextField fx:id="customerPostalCode" layoutX="61.0" layoutY="222.0" prefHeight="26.0" prefWidth="90.0" />
-      <Text layoutX="61.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Postal Code" />
-      <TextField fx:id="customerPhone" layoutX="335.0" layoutY="97.0" />
-      <Text layoutX="335.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number" />
-      <Button fx:id="createButton" layoutX="191.0" layoutY="327.0" mnemonicParsing="false" onAction="#onCreateClick" text="Create" />
-      <Button fx:id="cancelButton" layoutX="295.0" layoutY="327.0" mnemonicParsing="false" onAction="#onCancelClick" text="Cancel" />
-      <Text layoutX="333.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="State" />
-      <ComboBox fx:id="stateComboBox" layoutX="335.0" layoutY="170.0" prefHeight="26.0" prefWidth="126.0" />
+      <Text layoutX="71.0" layoutY="415.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Locaiton: " />
+      <Text fx:id="locationText" layoutX="131.0" layoutY="415.0" strokeType="OUTSIDE" strokeWidth="0.0" text="France" />
+      <TextField fx:id="customerAddress" layoutX="59.0" layoutY="222.0" prefHeight="26.0" prefWidth="182.0" />
+      <Text layoutX="59.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address" />
+      <TextField fx:id="customerPostalCode" layoutX="59.0" layoutY="285.0" prefHeight="26.0" prefWidth="90.0" />
+      <Text layoutX="59.0" layoutY="276.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Postal Code" />
+      <TextField fx:id="customerPhone" layoutX="377.0" layoutY="108.0" />
+      <Text layoutX="377.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone Number" />
+      <Button fx:id="createButton" layoutX="227.0" layoutY="377.0" mnemonicParsing="false" onAction="#onCreateClick" text="Create" />
+      <Button fx:id="cancelButton" layoutX="331.0" layoutY="377.0" mnemonicParsing="false" onAction="#onCancelClick" text="Cancel" />
+      <Text layoutX="375.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="State" />
+      <ComboBox fx:id="stateComboBox" layoutX="377.0" layoutY="181.0" prefHeight="26.0" prefWidth="126.0" />
+      <TextField fx:id="idField" layoutX="58.0" layoutY="104.0" prefHeight="26.0" prefWidth="90.0" />
+      <Text layoutX="59.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" />
    </children>
 </AnchorPane>
