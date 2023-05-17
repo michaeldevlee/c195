@@ -12,6 +12,12 @@ import java.util.HashMap;
 
 public abstract class CountryQuery {
 
+    /**
+
+     Selects all countries from the database and returns a map of country names and their corresponding IDs.
+     @return a {@code HashMap} containing the name and ID of each country in the database.
+     @throws SQLException if a database access error occurs.
+     */
     public static HashMap<String, Integer> select() throws SQLException {
         HashMap<String, Integer> countries = new HashMap<>();
         String sql = "SELECT * FROM client_schedule.countries";

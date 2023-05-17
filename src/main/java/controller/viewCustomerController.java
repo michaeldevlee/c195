@@ -1,3 +1,8 @@
+/**
+
+ Controller class for the view customer page.
+ */
+
 package controller;
 
 import com.main.c195.main;
@@ -22,28 +27,100 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+
 public class viewCustomerController implements Initializable {
 
+    /**
+
+     The stage for the customer view.
+     */
     Stage stage;
+    /**
+
+     Table view for displaying the list of customers.
+     */
     @FXML
     private TableView<Customers> customersTableView;
-    @FXML private TableColumn<?, ?> customerID;
-    @FXML private TableColumn<?, ?> name;
-    @FXML private TableColumn<?, ?> address;
-    @FXML private TableColumn<?, ?> postalCode;
-    @FXML private TableColumn<?, ?> phone;
-    @FXML private TableColumn<?, ?> createDate;
-    @FXML private TableColumn<?, ?> createdBy;
-    @FXML private TableColumn<?, ?> lastUpdate;
-    @FXML private TableColumn<?, ?> lastUpdatedBy;
-    @FXML private TableColumn<?, ?> divisionID;
+    /**
 
+     Column for displaying the customer ID.
+     */
+    @FXML
+    private TableColumn<?, ?> customerID;
+    /**
+
+     Column for displaying the customer name.
+     */
+    @FXML
+    private TableColumn<?, ?> name;
+    /**
+
+     Column for displaying the customer address.
+     */
+    @FXML
+    private TableColumn<?, ?> address;
+    /**
+
+     Column for displaying the customer postal code.
+     */
+    @FXML
+    private TableColumn<?, ?> postalCode;
+    /**
+
+     Column for displaying the customer phone number.
+     */
+    @FXML
+    private TableColumn<?, ?> phone;
+    /**
+
+     Column for displaying the date the customer was created.
+     */
+    @FXML
+    private TableColumn<?, ?> createDate;
+    /**
+
+     Column for displaying the user who created the customer.
+     */
+    @FXML
+    private TableColumn<?, ?> createdBy;
+    /**
+
+     Column for displaying the last update date of the customer.
+     */
+    @FXML
+    private TableColumn<?, ?> lastUpdate;
+    /**
+
+     Column for displaying the user who last updated the customer.
+     */
+    @FXML
+    private TableColumn<?, ?> lastUpdatedBy;
+    /**
+
+     Column for displaying the division ID of the customer.
+     */
+    @FXML
+    private TableColumn<?, ?> divisionID;
+    /**
+
+     The list of customers to be displayed in the table view.
+     */
     ObservableList<Customers> customers = FXCollections.observableArrayList();
 
+    /**
+
+     Fetches all customers from the database and sets them in the customers ObservableList.
+     @throws SQLException If an error occurs while interacting with the database.
+     */
     void fetchCustomers() throws SQLException {
         customers = CustomersQuery.select();
     }
+    /**
 
+     Handles the click event of the "Add" button, opens the "Create Customer" page when clicked.
+     @param event The click event.
+     @throws IOException If an error occurs while loading the FXML file for the "Create Customer" page.
+     */
     @FXML
     void onAddClick(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -52,6 +129,15 @@ public class viewCustomerController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+    /**
+     * Handles the event when the edit button is clicked.
+     * If a customer is selected, loads the customer's data into the edit form.
+     * Otherwise, displays a warning message.
+     *
+     * @param event the ActionEvent that triggered this method
+     * @throws IOException if an error occurs while loading the edit customer form
+     * @throws SQLException if an error occurs while executing the SQL query
+     */
     @FXML
     void onEditClick(ActionEvent event) throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader();
@@ -83,6 +169,14 @@ public class viewCustomerController implements Initializable {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "Customer has been deleted");
         Optional<ButtonType> result = alert.showAndWait();
     }
+
+    /**
+
+     Deletes the selected customer from the database and refreshes the customer list.
+     Displays an information dialog to notify the user of the deletion.
+     @param event The event that triggered the method call.
+     @throws SQLException if an SQL exception occurs while accessing the database.
+     */
     @FXML
     void onAppointmentListClick(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -92,6 +186,12 @@ public class viewCustomerController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Initializes the controller by fetching the customers from the database, setting up the table columns,
+     * and populating the table with the fetched data.
+     * @param url the URL of the FXML file that this controller is associated with
+     * @param resourceBundle the resource bundle used to localize the FXML file
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         try {

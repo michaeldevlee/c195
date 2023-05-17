@@ -27,27 +27,74 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 public class editCustomersController implements Initializable {
+    /**
+     * The stage used for displaying the customer form.
+     */
     Stage stage;
+
+    /**
+     * The text field for the customer's name.
+     */
     @FXML
     private TextField customerName;
+
+    /**
+     * The text field for the customer's address.
+     */
     @FXML
     private TextField customerAddress;
+
+    /**
+     * The text field for the customer's postal code.
+     */
     @FXML
     private TextField customerPostalCode;
+
+    /**
+     * The text field for the customer's phone number.
+     */
     @FXML
     private TextField customerPhone;
 
+    /**
+     * The combo box for selecting the customer's state.
+     */
     @FXML
-    private ComboBox <String> stateComboBox;
+    private ComboBox<String> stateComboBox;
 
+    /**
+     * The combo box for selecting the customer's country.
+     */
     @FXML
     private ComboBox<String> countryComboBox;
+
+    /**
+     * The text field for displaying the customer ID (auto-generated).
+     */
     @FXML
     private TextField idField;
+
+    /**
+     * A map of division names to division IDs.
+     */
     HashMap<String, Integer> divisions;
+
+    /**
+     * A map of country names to country IDs.
+     */
     HashMap<String, Integer> countries;
+
+    /**
+     * The current customer being edited or viewed.
+     */
     public Customers currentCustomer;
 
+    /**
+     * Returns the name of the division with the specified ID.
+     *
+     * @param division_id the ID of the division to find the name of
+     * @return the name of the division with the specified ID, or {@code null} if no such division is found
+     */
     String findDivisionName(int division_id){
         for (Map.Entry<String, Integer> entry : divisions.entrySet()) {
             if (entry.getValue().equals(division_id)) {
@@ -57,6 +104,14 @@ public class editCustomersController implements Initializable {
         return null; // or throw an exception, if desired
     }
 
+    /**
+     * Initializes the state combo box with data obtained from the database.
+     * Populates the combo box with the names of the first-level divisions (states or provinces) in the database,
+     * and sets up the hash map for division ID lookup.
+     *
+     * @throws SQLException if there is an error executing the SQL query to retrieve the division data from the database
+     */
+
     void stateComboBoxInit() throws SQLException {
         divisions = FirstLevelDivisionQuery.selectAndReturnHash();
         ObservableList<String> divisionNames = FXCollections.observableArrayList();
@@ -64,6 +119,10 @@ public class editCustomersController implements Initializable {
         stateComboBox.setItems(divisionNames.sorted());
     }
 
+    /**
+     * Initializes the country combo box by populating it with country names from the database.
+     * @throws SQLException if there is an error accessing the database
+     */
     void countryComboBoxInit() throws SQLException{
         countries = CountryQuery.select();
         ObservableList<String> countryNames = FXCollections.observableArrayList();
@@ -71,6 +130,20 @@ public class editCustomersController implements Initializable {
         countryComboBox.setItems(countryNames);
     }
 
+    /**
+
+     Handles the event when the submit button is clicked.
+
+     Updates the current customer information with the values input by the user
+
+     and updates the database. Then redirects to the view customer page.
+
+     @param event An ActionEvent that is triggered when the submit button is clicked.
+
+     @throws IOException If an I/O error occurs while redirecting to the view customer page.
+
+     @throws SQLException If a SQL error occurs while updating the database.
+     */
     @FXML
     void onSubmitClick(ActionEvent event) throws IOException, SQLException {
         String name = customerName.getText();
@@ -98,6 +171,14 @@ public class editCustomersController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
+    /**
+     * Handles the action when the cancel button is clicked.
+     * Returns the user to the view customer page.
+     *
+     * @param event the action event that triggered the method call
+     * @throws IOException if an error occurs while loading the FXML file
+     */
     @FXML
     void onCancelClick(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -107,6 +188,12 @@ public class editCustomersController implements Initializable {
         stage.show();
     }
 
+    /**
+     * This method is called when the value of the countryComboBox changes.
+     * It queries the database for the divisions in the selected country and updates the options in the stateComboBox accordingly.
+     * @param event the ActionEvent triggered by the change in the countryComboBox value
+     * @throws SQLException if there is an error in the SQL query
+     */
     @FXML
     void onCountryComboBoxChange(ActionEvent event) throws SQLException {
         divisions = FirstLevelDivisionQuery.selectAndReturnHash();
@@ -121,6 +208,14 @@ public class editCustomersController implements Initializable {
         stateComboBox.setItems(divisionNames.sorted());
     }
 
+    /**
+
+     Populates the fields in the "Edit Customer" form with the information from the provided {@link Customers} object.
+
+     @param customer the customer object containing the information to be displayed in the form
+
+     @throws SQLException if there is an error while retrieving data from the database
+     */
     public void sendCustomer(Customers customer) throws SQLException {
 
         currentCustomer = customer;
@@ -132,8 +227,15 @@ public class editCustomersController implements Initializable {
 
     }
 
-
-
+    /**
+     * Initializes the controller class.
+     * Sets the "idField" TextField to be disabled with prompt text "Auto-generated".
+     * Initializes the state and country ComboBoxes by populating them with data from the database.
+     *
+     * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle The resources used to localize the root object, or null if the root object was not localized.
+     * @throws RuntimeException if there is a SQL exception while initializing the state and country ComboBoxes.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idField.setDisable(true);

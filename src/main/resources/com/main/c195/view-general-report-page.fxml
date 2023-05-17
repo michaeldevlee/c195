@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="602.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.viewGeneralReportController">
+   <children>
+      <Button fx:id="exitButton" layoutX="282.0" layoutY="538.0" mnemonicParsing="false" onAction="#onExitClick" text="Exit" />
+      <Text fx:id="totalNumAppText" layoutX="129.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+      <Text layoutX="252.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GENERAL REPORT" />
+      <Text layoutX="73.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOTAL APPOINTMENTS" />
+      <TableView fx:id="appointmentsTableView" layoutX="26.0" layoutY="240.0" prefHeight="273.0" prefWidth="548.0">
+         <columns>
+            <TableColumn fx:id="appointmentID" prefWidth="49.5999755859375" text="ID" />
+            <TableColumn fx:id="title" prefWidth="84.00006103515625" text="Title" />
+            <TableColumn fx:id="description" prefWidth="86.4000244140625" text="Description" />
+            <TableColumn fx:id="type" prefWidth="79.199951171875" text="Type" />
+            <TableColumn fx:id="start" prefWidth="78.4000244140625" text="Start" />
+            <TableColumn fx:id="end" prefWidth="89.5999755859375" text="End" />
+            <TableColumn fx:id="customerID" prefWidth="77.60003662109375" text="Customer ID" />
+         </columns>
+      </TableView>
+      <Text layoutX="390.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TOTAL CUSTOMERS" />
+      <Text fx:id="totalCustText" layoutX="450.0" layoutY="152.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+      <ComboBox fx:id="appointmentMonthComboBox" layoutX="147.0" layoutY="87.0" onAction="#onAppointmentMonthComboBoxChange" prefHeight="26.0" prefWidth="83.0" promptText="Month" />
+      <ComboBox fx:id="appointmentTypeComboBox" layoutX="57.0" layoutY="87.0" onAction="#onAppointmentTypeComboBoxChange" prefHeight="26.0" prefWidth="83.0" promptText="Type" />
+      <ComboBox fx:id="customerMonthComboBox" layoutX="370.0" layoutY="87.0" onAction="#onCustomerMonthComboBox" prefHeight="26.0" prefWidth="83.0" promptText="Month" />
+      <ComboBox fx:id="customerYearComboBox" layoutX="461.0" layoutY="87.0" onAction="#onCustomerYearComboBox" prefHeight="26.0" prefWidth="83.0" promptText="Year" />
+      <ComboBox fx:id="contactNameComboBox" layoutX="26.0" layoutY="198.0" onAction="#onContactNameComboBox" prefHeight="26.0" prefWidth="186.0" promptText="Contact Name" />
+   </children>
+</AnchorPane>

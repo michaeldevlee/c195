@@ -1,3 +1,7 @@
+/**
+
+ Controller class for the edit appointment page.
+ */
 package controller;
 
 import com.main.c195.main;
@@ -26,7 +30,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.HashMap;
@@ -36,39 +39,108 @@ import java.util.ResourceBundle;
 public class editAppointmentController implements Initializable {
 
     Stage stage;
+    /**
+     * The text field for the appointment title.
+     */
     @FXML
     private TextField titleField;
+
+    /**
+     * The text field for the appointment description.
+     */
     @FXML
     private TextField descriptionField;
+
+    /**
+     * The text field for the appointment location.
+     */
     @FXML
     private TextField locationField;
+
+    /**
+     * The text field for the appointment type.
+     */
     @FXML
     private TextField typeField;
+
+    /**
+     * The date picker for the appointment start date.
+     */
     @FXML
     private DatePicker fromDatePicker;
+
+    /**
+     * The combo box for the appointment start time.
+     */
     @FXML
     private ComboBox startTimeComboBox;
+
+    /**
+     * The date picker for the appointment end date.
+     */
     @FXML
     private DatePicker toDatePicker;
+
+    /**
+     * The combo box for the appointment end time.
+     */
     @FXML
     private ComboBox endTimeComboBox;
+
+    /**
+     * The combo box for selecting the customer associated with the appointment.
+     */
     @FXML
     private ComboBox customerDropDown;
+
+    /**
+     * The combo box for selecting the user assigned to the appointment.
+     */
     @FXML
     private ComboBox assignUserDropDown;
+
+    /**
+     * The combo box for selecting the contact associated with the appointment.
+     */
     @FXML
     private ComboBox contactInfoDropDown;
+
+    /**
+     * The text field for the appointment ID.
+     */
     @FXML
     private TextField idField;
 
+    /**
+     * The current appointment being edited.
+     */
     public Appointments currentAppointment;
-    public editAppointmentController() throws SQLException {
-    }
 
+    /**
+
+     HashMap to hold the IDs of users.
+     The keys are the names of the users and the values are their corresponding IDs.
+     */
     HashMap<String, Integer> userIDs = new HashMap<String, Integer>();
+    /**
+
+     HashMap to hold the IDs of customers.
+     The keys are the names of the customers and the values are their corresponding IDs.
+     */
     HashMap<String, Integer> customerIDs = new HashMap<String, Integer>();
+    /**
+
+     HashMap to hold the IDs of contacts.
+     The keys are the names of the contacts and the values are their corresponding IDs.
+     */
     HashMap<String, Integer> contactIDs = new HashMap<String, Integer>();
 
+    /**
+
+     Initializes the drop-down menus with the appropriate values retrieved from the database.
+
+     @throws SQLException if there is an error while accessing the database
+     */
     void dropDownInit() throws SQLException {
 // get the user names and IDs and populate the combo box
         HashMap<Integer, String> userNames = UsersQuery.getUserNames();
@@ -91,7 +163,9 @@ public class editAppointmentController implements Initializable {
         }
 
         // get the contact emails and IDs and populate the combo box
-        HashMap<Integer, String> contactEmails = ContactsQuery.getContacts();
+        //The justification for using the lambda is that it allows for more readable
+        // and maintainable code, and reduces the amount of boilerplate code needed for the iteration process.
+        HashMap<Integer, String> contactEmails = ContactsQuery.getContactsByEmail();
         contactEmails.forEach((contactID, email) -> {
             String option = email;
             contactIDs.put(email, contactID);
@@ -103,6 +177,16 @@ public class editAppointmentController implements Initializable {
 
     }
 
+    /**
+
+     Handles the submit button click to update an appointment's details in the database and return to the main appointments page.
+
+     @param event An ActionEvent representing the click event.
+
+     @throws IOException if there is an error loading the FXML file for the main appointments page.
+
+     @throws SQLException if there is an error updating the appointment details in the database.
+     */
     @FXML
     void onSubmitClick(ActionEvent event) throws IOException, SQLException {
 
@@ -146,6 +230,12 @@ public class editAppointmentController implements Initializable {
         stage.show();
 
     }
+    /**
+
+     This method handles the "Cancel" button click event and redirects the user back to the appointment view page.
+     @param event The event object that triggers the method call.
+     @throws IOException If an error occurs while loading the appointment view page FXML file.
+     */
     @FXML
     void onCancelClick(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -155,6 +245,13 @@ public class editAppointmentController implements Initializable {
         stage.show();
     }
 
+    /**
+
+     This method sets the values of the fields in the form to those of the given appointment and populates the dropdown menus
+     with relevant options.
+     @param appointment The appointment object whose data is to be displayed in the form.
+     @throws SQLException if there is an error accessing the database.
+     */
     public void sendAppointment(Appointments appointment) throws SQLException {
         currentAppointment = appointment;
         titleField.setText(appointment.getTitle());
@@ -174,6 +271,17 @@ public class editAppointmentController implements Initializable {
         assignUserDropDown.setValue(user.getUser_name());
         contactInfoDropDown.setValue(contact.getEmail());
     }
+
+    /**
+     * Initializes the controller class.
+     * Disables the ID field and sets its prompt text to "Auto-generated".
+     * Initializes the drop-down menus for users, customers, and contacts.
+     *
+     * @param url the location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle the resources used to localize the root object, or null if the root object was not localized.
+     * @throws RuntimeException if there is a problem initializing the drop-down menus.
+     */
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idField.setDisable(true);

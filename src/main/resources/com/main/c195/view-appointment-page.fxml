@@ -34,13 +34,14 @@
          </toggleGroup>
       </RadioButton>
       <RadioButton fx:id="monthlyRadioButton" layoutX="153.0" layoutY="55.0" mnemonicParsing="false" onAction="#onMonthlyRadioClick" text="Monthly" toggleGroup="$viewType" />
-      <Button fx:id="addButton" layoutX="744.0" layoutY="42.0" mnemonicParsing="false" onAction="#onAddClick" text="Add" />
-      <Button fx:id="editButton" layoutX="707.0" layoutY="505.0" mnemonicParsing="false" onAction="#onEditClick" text="Edit" />
+      <Button fx:id="addButton" layoutX="700.0" layoutY="51.0" mnemonicParsing="false" onAction="#onAddClick" text="Add" />
+      <Button fx:id="editButton" layoutX="758.0" layoutY="505.0" mnemonicParsing="false" onAction="#onEditClick" text="Edit" />
       <DatePicker fx:id="fromWeekPicker" layoutX="319.0" layoutY="50.0" onAction="#onWeekPickerChange" prefHeight="26.0" prefWidth="107.0" />
       <Text layoutX="283.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="From" />
       <DatePicker fx:id="toWeekPicker" layoutX="460.0" layoutY="50.0" onAction="#onWeekPickerChange" prefHeight="26.0" prefWidth="107.0" />
       <Text layoutX="446.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To" />
-      <Button fx:id="deleteButton" layoutX="782.0" layoutY="505.0" mnemonicParsing="false" onAction="#onDeleteClick" text="Delete" />
+      <Button fx:id="deleteButton" layoutX="830.0" layoutY="505.0" mnemonicParsing="false" onAction="#onDeleteClick" text="Delete" />
       <Button fx:id="customerListButton" layoutX="194.0" layoutY="505.0" mnemonicParsing="false" onAction="#onCustomerListClick" prefHeight="26.0" prefWidth="89.0" text="Customer List" />
+      <Button fx:id="generateReportsButton" layoutX="758.0" layoutY="50.0" mnemonicParsing="false" onAction="#onGenerateReportsClick" prefHeight="26.0" prefWidth="122.0" text="Generate Reports" />
    </children>
 </AnchorPane>

@@ -1,3 +1,9 @@
+/**
+
+ The createAppointmentController class is a controller class for the "create appointment" view.
+ It implements the Initializable interface to provide an initialize() method for initialization logic.
+ */
+
 package controller;
 
 import com.main.c195.main;
@@ -31,38 +37,72 @@ import java.util.ResourceBundle;
 public class createAppointmentController implements Initializable {
 
     Stage stage;
+    /**
+     * The text field for the title of the appointment.
+     */
     @FXML
     private TextField titleField;
+    /**
+     * The text field for the description of the appointment.
+     */
     @FXML
     private TextField descriptionField;
+    /**
+     * The text field for the location of the appointment.
+     */
     @FXML
     private TextField locationField;
+    /**
+     * The text field for the type of the appointment.
+     */
     @FXML
     private TextField typeField;
+    /**
+     * The date picker for the start date of the appointment.
+     */
     @FXML
     private DatePicker fromDatePicker;
+    /**
+     * The combo box for the start time of the appointment.
+     */
     @FXML
     private ComboBox startTimeComboBox;
+    /**
+     * The date picker for the end date of the appointment.
+     */
     @FXML
     private DatePicker toDatePicker;
+    /**
+     * The combo box for the end time of the appointment.
+     */
     @FXML
     private ComboBox endTimeComboBox;
+    /**
+     * The combo box for the customer of the appointment.
+     */
     @FXML
     private ComboBox customerDropDown;
+    /**
+     * The combo box for the assigned user of the appointment.
+     */
     @FXML
     private ComboBox assignUserDropDown;
+    /**
+     * The combo box for the contact information of the appointment.
+     */
     @FXML
     private ComboBox contactInfoDropDown;
-
+    /**
+     * The text field for the ID of the appointment.
+     */
     @FXML
     private TextField idField;
-    @FXML
-    private Button createButton;
-    @FXML
-    private Button exitButton;
 
-
-
+    /**
+     * Creates a controller for appointment creation.
+     *
+     * @throws SQLException if there is an error with the SQL database
+     */
     public createAppointmentController() throws SQLException {
     }
 
@@ -70,6 +110,11 @@ public class createAppointmentController implements Initializable {
     HashMap<String, Integer> customerIDs = new HashMap<String, Integer>();
     HashMap<String, Integer> contactIDs = new HashMap<String, Integer>();
 
+    /**
+     * Initializes the dropdown menus for users, customers, and contacts.
+     *
+     * @throws SQLException if there is an error with the SQL database
+     */
     void dropDownInit() throws SQLException {
 // get the user names and IDs and populate the combo box
         HashMap<Integer, String> userNames = UsersQuery.getUserNames();
@@ -92,7 +137,7 @@ public class createAppointmentController implements Initializable {
         }
 
         // get the contact emails and IDs and populate the combo box
-        HashMap<Integer, String> contactEmails = ContactsQuery.getContacts();
+        HashMap<Integer, String> contactEmails = ContactsQuery.getContactsByEmail();
         contactEmails.forEach((contactID, email) -> {
             String option = email;
             contactIDs.put(email, contactID);
@@ -104,6 +149,20 @@ public class createAppointmentController implements Initializable {
 
     }
 
+    /**
+
+     Handles creating a new appointment when the "Create" button is clicked. Inserts a new appointment into the database
+
+     with the information provided by the user. If the new appointment overlaps with an existing one, a warning dialog box is
+
+     displayed, and the appointment is not created.
+
+     @param event The ActionEvent object that triggered this method.
+
+     @throws IOException If there is an I/O error loading the appointment page FXML file.
+
+     @throws SQLException If there is an error with the SQL query to insert the new appointment into the database.
+     */
     @FXML
     void onCreateClick(ActionEvent event) throws IOException, SQLException {
         String titleText = titleField.getText();
@@ -170,6 +229,13 @@ public class createAppointmentController implements Initializable {
 
 
     }
+    /**
+
+     Handles cancelling the creation of a new appointment when the "Cancel" button is clicked.
+     Returns the user to the appointment page.
+     @param event The ActionEvent object that triggered this method.
+     @throws IOException If there is an I/O error loading the appointment page FXML file.
+     */
     @FXML
     void onCancelClick(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -179,6 +245,13 @@ public class createAppointmentController implements Initializable {
         stage.show();
     }
 
+    /**
+
+     Initializes the appointment creation form. Disables the ID field and sets its prompt text to "Auto-generated".
+     Initializes the drop-down menus for the customers, users, and contact information.
+     @param url The location used to resolve relative paths for the root object, or null if the location is not known.
+     @param resourceBundle The resources used to localize the root object, or null if the root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idField.setDisable(true);

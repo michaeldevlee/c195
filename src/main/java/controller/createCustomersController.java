@@ -1,3 +1,9 @@
+/**
+
+ This class is the controller for the "Create Customer" page in the application. It implements the Initializable interface
+ to initialize the stateComboBox with the first level divisions.
+ */
+
 package controller;
 
 import com.main.c195.main;
@@ -25,16 +31,38 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 public class createCustomersController implements Initializable {
+    /**
+     * The stage for the "Create Customer" page
+     */
     Stage stage;
+
+    /**
+     * The TextField for the customer name
+     */
     @FXML
     private TextField customerName;
+
+    /**
+     * The TextField for the customer address
+     */
     @FXML
     private TextField customerAddress;
+
+    /**
+     * The TextField for the customer postal code
+     */
     @FXML
     private TextField customerPostalCode;
+
+    /**
+     * The TextField for the customer phone number
+     */
     @FXML
     private TextField customerPhone;
 
+    /**
+     * The ComboBox for the state options. It will be populated with the first level divisions.
+     */
     @FXML
     private ComboBox <String> stateComboBox;
 
@@ -42,6 +70,12 @@ public class createCustomersController implements Initializable {
     private TextField idField;
     HashMap<String, Integer> divisions;
 
+
+    /**
+     * Initializes the state combo box with division names.
+     *
+     * @throws SQLException if a database access error occurs.
+     */
     void stateComboBoxInit() throws SQLException {
         divisions = FirstLevelDivisionQuery.selectAndReturnHash();
         ObservableList<String> divisionNames = FXCollections.observableArrayList();
@@ -49,7 +83,13 @@ public class createCustomersController implements Initializable {
 
         stateComboBox.setItems(divisionNames.sorted());
     }
-
+    /**
+     * Handles the creation of a new customer.
+     *
+     * @param event the action event triggered by the user.
+     * @throws IOException if an I/O error occurs.
+     * @throws SQLException if a database access error occurs.
+     */
     @FXML
     void onCreateClick(ActionEvent event) throws IOException, SQLException {
         String name = customerName.getText();
@@ -76,6 +116,13 @@ public class createCustomersController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+    /**
+     * Handles the creation of a new customer.
+     *
+     * @param event the action event triggered by the user.
+     * @throws IOException if an I/O error occurs.
+     * @throws SQLException if a database access error occurs.
+     */
     @FXML
     void onCancelClick(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -85,6 +132,13 @@ public class createCustomersController implements Initializable {
         stage.show();
     }
 
+    /**
+     * This method initializes the stateComboBox with the first level divisions in the database.
+     * It is called when the "Create Customer" page is loaded.
+     *
+     * @param url The location used to resolve relative paths for the root object, or null if the location is not known.
+     * @param resourceBundle The resources used to localize the root object, or null if the root object was not localized.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         idField.setDisable(true);

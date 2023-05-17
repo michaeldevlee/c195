@@ -10,8 +10,20 @@ import java.sql.Timestamp;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * This abstract class provides various methods for validating appointment data.
+ */
 public abstract class AppValidCheck {
 
+    /**
+     * Returns a list of errors for the given business hours and appointment start and end times.
+     *
+     * @param fromTime       the appointment start time in "HH:mm:ss" format
+     * @param fromDatePicker the appointment start date
+     * @param toTime         the appointment end time in "HH:mm:ss" format
+     * @param toDatePicker   the appointment end date
+     * @return the list of errors
+     */
     public static ObservableList<String> businessHoursErrorList(String fromTime, DatePicker fromDatePicker, String toTime, DatePicker toDatePicker){
 
         ObservableList<String> listOfErrors = FXCollections.observableArrayList();
@@ -64,11 +76,6 @@ public abstract class AppValidCheck {
 
         return listOfErrors;
     }
-
-    public static boolean hasOverlappingAppointment(Timestamp start, Timestamp end, int customer_id) throws SQLException {
-        return AppointmentsQuery.isOverlapping(start, end, customer_id);
-    }
-
 
 
 }

@@ -14,7 +14,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.Appointments;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.URL;
@@ -27,33 +26,118 @@ import java.util.Comparator;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for the view-appointment-page.fxml file.
+ * Handles displaying appointments in a table view and allows for filtering by week or month.
+ */
 public class viewAppointmentController implements Initializable {
 
+    /**
+     * The main stage of the application.
+     */
     Stage stage;
+
+    /**
+     * The radio button to display appointments by week.
+     */
     @FXML
     private RadioButton weeklyRadioButton;
+
+    /**
+     * The radio button to display appointments by month.
+     */
     @FXML
     private RadioButton monthlyRadioButton;
+
+    /**
+     * The date picker for the start of the week.
+     */
     @FXML
     private DatePicker fromWeekPicker;
+
+    /**
+     * The date picker for the end of the week.
+     */
     @FXML
     private DatePicker toWeekPicker;
 
+    /**
+     * The table view to display appointments.
+     */
     @FXML
     private TableView<Appointments> appointmentsTableView;
-    @FXML private TableColumn<?, ?> appointmentID;
-    @FXML private TableColumn<?, ?> title;
-    @FXML private TableColumn<?, ?> description;
-    @FXML private TableColumn<?, ?> location;
-    @FXML private TableColumn<?, ?> type;
-    @FXML private TableColumn<?, ?> start;
-    @FXML private TableColumn<?, ?> end;
-    @FXML private TableColumn<?, ?> customerID;
-    @FXML private TableColumn<?, ?> contactID;
-    @FXML private TableColumn<?, ?> userID;
 
+    /**
+     * The table column for the appointment ID.
+     */
+    @FXML
+    private TableColumn<?, ?> appointmentID;
+
+    /**
+     * The table column for the appointment title.
+     */
+    @FXML
+    private TableColumn<?, ?> title;
+
+    /**
+     * The table column for the appointment description.
+     */
+    @FXML
+    private TableColumn<?, ?> description;
+
+    /**
+     * The table column for the appointment location.
+     */
+    @FXML
+    private TableColumn<?, ?> location;
+
+    /**
+     * The table column for the appointment type.
+     */
+    @FXML
+    private TableColumn<?, ?> type;
+
+    /**
+     * The table column for the appointment start time.
+     */
+    @FXML
+    private TableColumn<?, ?> start;
+
+    /**
+     * The table column for the appointment end time.
+     */
+    @FXML
+    private TableColumn<?, ?> end;
+
+    /**
+     * The table column for the customer ID of the appointment.
+     */
+    @FXML
+    private TableColumn<?, ?> customerID;
+
+    /**
+     * The table column for the contact ID of the appointment.
+     */
+    @FXML
+    private TableColumn<?, ?> contactID;
+
+    /**
+     * The table column for the user ID of the appointment.
+     */
+    @FXML
+    private TableColumn<?, ?> userID;
+
+    /**
+
+     The ObservableList of Appointments to be fetched and displayed in the table view.
+     */
     ObservableList<Appointments> appointments = FXCollections.observableArrayList();
 
+    /**
+
+     Fetches all the appointments from the database using the AppointmentsQuery class and sorts them by start date.
+     @throws SQLException if an error occurs while executing the SQL query
+     */
     void fetchAppointments() throws SQLException {
         appointments = AppointmentsQuery.select();
         Collections.sort(appointments, new Comparator<Appointments>() {
@@ -64,7 +148,10 @@ public class viewAppointmentController implements Initializable {
         });
     }
 
+    /**
 
+     Populates the appointment table view based on the selected date range and filter option
+     */
     void populateAppointments() {
         LocalDate selectedDate = fromWeekPicker.getValue();
         ObservableList<Appointments> appointmentsToShow = FXCollections.observableArrayList();
@@ -99,6 +186,13 @@ public class viewAppointmentController implements Initializable {
         appointmentsTableView.setItems(appointmentsToShow);
     }
 
+    /**
+
+     Event handler for the "Add" button click.
+     Changes the scene to the "create-appointment-page.fxml" view.
+     @param event the event triggered by the button click
+     @throws IOException if an I/O error occurs
+     */
     @FXML
     void onAddClick(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -107,6 +201,17 @@ public class viewAppointmentController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+
+
+    /**
+
+     Handles the event when the "Edit" button is clicked by loading the edit appointment page
+     and passing the selected appointment to it for editing.
+     If no appointment is selected, a warning message is displayed to the user.
+     @param event the event triggered by clicking the "Edit" button
+     @throws IOException if there is an error loading the FXML file
+     @throws SQLException if there is an error executing the SQL query
+     */
     @FXML
     void onEditClick(ActionEvent event) throws IOException, SQLException {
         FXMLLoader loader = new FXMLLoader();
@@ -128,7 +233,19 @@ public class viewAppointmentController implements Initializable {
         }
     }
 
-    @FXML
+    /**
+
+     Handles the event when the "Delete" button is clicked.
+
+     Deletes the selected appointment from the database and updates the table view.
+
+     Displays an alert message with the appointment ID and type that was deleted.
+
+     @param event the ActionEvent object generated when the button is clicked
+
+     @throws SQLException if an SQL exception occurs while accessing the database
+     */
+ @FXML
     void onDeleteClick(ActionEvent event) throws SQLException {
         int appointment_id = appointmentsTableView.getSelectionModel().getSelectedItem().getAppointment_id();
         String appointment_type = AppointmentsQuery.select(appointment_id).getType();
@@ -140,26 +257,64 @@ public class viewAppointmentController implements Initializable {
         Optional<ButtonType> result = alert.showAndWait();
 
     }
+
+    /**
+
+     This method is called when the week picker value is changed.
+     It calls the populateAppointments() method to update the appointments shown.
+     @param event The event triggered by the week picker.
+     @throws IOException If an I/O exception occurs.
+     */
     @FXML
     void onWeekPickerChange(ActionEvent event) throws IOException{
 
         populateAppointments();
     }
 
+    /**
+
+     This method is called when the weekly radio button is clicked.
+     It calls the populateAppointments() method to update the appointments shown.
+     @param event The event triggered by the weekly radio button.
+     @throws IOException If an I/O exception occurs.
+     */
     @FXML
     void onWeeklyRadioClick(ActionEvent event) throws  IOException{
         populateAppointments();
     }
 
+    /**
+
+     This method is called when the monthly radio button is clicked.
+     It calls the populateAppointments() method to update the appointments shown.
+     @param event The event triggered by the monthly radio button.
+     @throws IOException If an I/O exception occurs.
+     */
     @FXML
     void onMonthlyRadioClick(ActionEvent event) throws  IOException{
         populateAppointments();
     }
 
+    /**
+     * Handles the event when the "Customer List" button is clicked by opening the "View Customer" page.
+     *
+     * @param event The event triggered by clicking the "Customer List" button.
+     * @throws IOException If an error occurs while loading the "View Customer" page.
+     */
     @FXML
     void onCustomerListClick(ActionEvent event) throws  IOException{
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("view-customer-page.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
+    @FXML
+    void onGenerateReportsClick(ActionEvent event) throws IOException {
+        stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(main.class.getResource("view-general-report-page.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.show();
