@@ -1,0 +1,1 @@
+[2023-05-16T18:38:38.439995800] User '12' attempted to log in. Login successful.
