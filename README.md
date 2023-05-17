@@ -1,20 +1,21 @@
-##Title
+## Title
 Appointment Management System
-##Purpose: 
+
+## Purpose
 This application allows users to manage appointments with customers.
 
-##Author Details
+## Author Details
 Author: Michael Lee
 Contact: mlee648@wgu.edu
 Student Application Version: 1.0
 Date: 5/16/2023
 
-##Development Environment
+## Development Environment
 IDE: IntelliJ IDEA Community 2022.3.3
 JDK: Java SE 17.0.6
 JavaFX: JavaFX-SDK-17.0.2
 
-##Installation Instructions
+## Installation Instructions
 Directions for Running the Program:
 1. Clone the repository to your local machine 
 2. Open the project in IntelliJ IDEA.
@@ -23,6 +24,5 @@ Directions for Running the Program:
 
 MySQL Connector Driver Version: mysql-connector-java-8.0.28
 
-##Additional Report Description
+## Additional Report Description
 The report I chose to create is the total number of customers within a given month and year.
-
